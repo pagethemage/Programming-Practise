@@ -4,6 +4,7 @@ class customerManager:
                            ## Variable is declared at top of class (inside of class is important)
                            ## This is called class level data/class level variables
 
+    @classmethod
     def addCustomer(cls, customer):
         cls.customerList.append(customer)
 
@@ -58,14 +59,12 @@ class customerManager:
             customerToModify.setBranch(new_branch)
 
 
-
 class customer:
     def __init__(self, ID, name, balance, branch):
         self.ID:int = ID
         self.name:str = name
         self.balance:float = balance
         self.branch:str = branch
-        customerManager.addCustomer(customer)
 
 
     def getName(self):
@@ -114,14 +113,18 @@ def main():
 
         if user_input == "1" or user_input == "display customers":
             print("\nCurrent list of customers: ")
-            customer.displayCustomers()
+            customerManager.displayCustomers()
 
         elif user_input == "2" or user_input == "add customer":
-            ncID = int(input("Please input customer's ID (integers only): "))
-            ncName = str(input("Please input customer's name: "))
-            ncBalance:float = input("Please input customers balance: $")
-            ncBranch:str = input("Please input customer's branch: ")
-            new_customer = customer(ncID, ncName, ncBalance, ncBranch)
+            try:
+                ncID = int(input("Please input customer's ID (integers only): "))
+                ncName = str(input("Please input customer's name: "))
+                ncBalance = float(input("Please input customers balance: $"))
+                ncBranch = str(input("Please input customer's branch: "))
+                new_customer = customer(ncID, ncName, ncBalance, ncBranch)
+            except ValueError:
+                print("\nNotice: Please ensure correct data types are provided.\n ")
+                continue
             customerManager.addCustomer(new_customer)
 
 
@@ -129,8 +132,8 @@ def main():
             index:int = input("Please provide number corresponding to the customer you want to remove: ")
             customerManager.removeCustomer(index)
 
-        elif user_input == "4" or user_input == "modify customer":
-            index:int = input("Please provide a number corresponding to the customer you would like to remove: ")
+        elif user_input == "4" or user_input == "modify customer": ## Complete this method, likely requires iteration
+            index:int = input("Please provide a number corresponding to the customer you would like to modify: ") 
             customerManager.modifyCustomer(index)
 
         elif user_input == "5" or user_input == "exit" or user_input == "quit":
@@ -139,9 +142,10 @@ def main():
 main()
 
 
-## TODO: /
+## TODO: 
 ## 1. Fix printing objects (customers) returning gibberish, __str__ method may be wrong.  [COMPLETE] (18/08/24)
-## 2. Fix error on line 68 (run code again to get report from compiler)
+## 2. Fix error on line 68 (run code again to get report from compiler) [COMPLETE] (19/08/2024)
+## 3. Fix modify customer method -> will likely require iterating through customerList based on ID
 
 
 #Notes: 
@@ -160,4 +164,5 @@ main()
 ## -    eg. customerList will need cls methods to modify it
 
 ## -    self methods refer to a specific instance of the class (ie. John as an instance of Person)
-## -    
+
+## @classmethod is not just a tag, it will break code if in the wrong place. 
